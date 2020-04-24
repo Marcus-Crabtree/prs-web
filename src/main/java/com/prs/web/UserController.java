@@ -16,7 +16,8 @@ import com.prs.db.UserRepository;
 public class UserController {
 	@Autowired
 	private UserRepository userRepo;
-	@GetMapping ("/")
+
+	@GetMapping("/")
 	public JsonResponse list() {
 		JsonResponse jr = null;
 		List<User> users = userRepo.findAll();
@@ -25,6 +26,20 @@ public class UserController {
 		} else {
 			jr = JsonResponse.getErrorInstance("No users found.");
 		}
+		return jr;
+	}
+
+//login method
+	@PostMapping("/login")
+	public JsonResponse login(@RequestBody User u) {
+		JsonResponse jr = null;
+		Optional<User> user = userRepo.findByUserNameAndPassword(u.getUserName(), u.getPassword());
+		if (user.isPresent()) {
+			jr = JsonResponse.getInstance(user.get());
+		} else {
+			jr = JsonResponse.getErrorInstance("Invalid username/pwd combination try again");
+		}
+
 		return jr;
 	}
 

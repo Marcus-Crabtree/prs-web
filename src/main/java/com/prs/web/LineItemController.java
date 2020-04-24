@@ -23,7 +23,7 @@ public class LineItemController {
 		if (lineItems.size() > 0) {
 			jr = JsonResponse.getInstance(lineItems);
 		} else {
-			jr = JsonResponse.getErrorInstance("No lineItems found.");
+			jr = JsonResponse.getErrorInstance("No Line Items found.");
 		}
 		return jr;
 	}
@@ -36,7 +36,7 @@ public class LineItemController {
 		if (lineItem.isPresent()) {
 			jr = JsonResponse.getInstance(lineItem.get());
 		} else {
-			jr = JsonResponse.getErrorInstance("No lineItem found for ID: " + id);
+			jr = JsonResponse.getErrorInstance("No Line Item found for ID: " + id);
 		}
 
 		return jr;
@@ -54,7 +54,7 @@ public class LineItemController {
 			jr = JsonResponse.getErrorInstance(dive.getRootCause().getMessage());
 			dive.printStackTrace();
 		} catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error creating lineItem: " + e.getMessage());
+			jr = JsonResponse.getErrorInstance("Error creating Line Item: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -70,7 +70,7 @@ public class LineItemController {
 			lineItem = lineItemRepo.save(lineItem);
 			jr = JsonResponse.getInstance(lineItem);
 		} catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error updating lineItem: " + e.getMessage());
+			jr = JsonResponse.getErrorInstance("Error updating Line Item: " + e.getMessage());
 			e.printStackTrace();
 		}
 
@@ -86,7 +86,7 @@ public class LineItemController {
 			lineItemRepo.deleteById(id);
 			jr = JsonResponse.getInstance(id);
 		} catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error deleting lineItem: " + e.getMessage());
+			jr = JsonResponse.getErrorInstance("Error deleting Line Item: " + e.getMessage());
 			e.printStackTrace();
 		}
 
