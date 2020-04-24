@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.prs.business.JsonResponse;
 import com.prs.business.Vendor;
-import com.prs.business.Vendor;
+
 import com.prs.db.VendorRepository;
 
 @RestController
