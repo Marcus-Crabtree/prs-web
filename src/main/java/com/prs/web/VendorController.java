@@ -24,7 +24,8 @@ import com.prs.db.VendorRepository;
 public class VendorController {
 	@Autowired
 	private VendorRepository vendorRepo;
-	@GetMapping ("/")
+
+	@GetMapping("/")
 	public JsonResponse list() {
 		JsonResponse jr = null;
 		List<Vendor> vendors = vendorRepo.findAll();
@@ -49,59 +50,56 @@ public class VendorController {
 
 		return jr;
 	}
+
 	// 'create' method
-		@PostMapping("/")
-		public JsonResponse createVendor(@RequestBody Vendor vendor) {
-			JsonResponse jr = null;
+	@PostMapping("/")
+	public JsonResponse createVendor(@RequestBody Vendor vendor) {
+		JsonResponse jr = null;
 
-			try {
-				vendor = vendorRepo.save(vendor);
-				jr = JsonResponse.getInstance(vendor);
-			} catch (DataIntegrityViolationException dive) {
-				jr = JsonResponse.getErrorInstance(dive.getRootCause().getMessage());
-				dive.printStackTrace();
-			} catch (Exception e) {
-				jr = JsonResponse.getErrorInstance("Error creating vendor: " + e.getMessage());
-				e.printStackTrace();
-			}
-
-			return jr;
+		try {
+			vendor = vendorRepo.save(vendor);
+			jr = JsonResponse.getInstance(vendor);
+		} catch (DataIntegrityViolationException dive) {
+			jr = JsonResponse.getErrorInstance(dive.getRootCause().getMessage());
+			dive.printStackTrace();
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error creating vendor: " + e.getMessage());
+			e.printStackTrace();
 		}
+
+		return jr;
+	}
 
 	// update method
-		@PutMapping("/")
-		public JsonResponse updateVendor(@RequestBody Vendor vendor) {
-			JsonResponse jr = null;
+	@PutMapping("/")
+	public JsonResponse updateVendor(@RequestBody Vendor vendor) {
+		JsonResponse jr = null;
 
-			try {
-				vendor = vendorRepo.save(vendor);
-				jr = JsonResponse.getInstance(vendor);
-			} catch (Exception e) {
-				jr = JsonResponse.getErrorInstance("Error updating vendor: " + e.getMessage());
-				e.printStackTrace();
-			}
-
-			return jr;
+		try {
+			vendor = vendorRepo.save(vendor);
+			jr = JsonResponse.getInstance(vendor);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error updating vendor: " + e.getMessage());
+			e.printStackTrace();
 		}
 
-	//delete method
-		@DeleteMapping("/{id}")
-		public JsonResponse deleteVendor(@PathVariable int id) {
-			JsonResponse jr = null;
+		return jr;
+	}
 
-			try {
-				vendorRepo.deleteById(id);
-				jr = JsonResponse.getInstance(id);
-			} catch (Exception e) {
-				jr = JsonResponse.getErrorInstance("Error deleting vendor: " + e.getMessage());
-				e.printStackTrace();
-			}
+	// delete method
+	@DeleteMapping("/{id}")
+	public JsonResponse deleteVendor(@PathVariable int id) {
+		JsonResponse jr = null;
 
-			return jr;
+		try {
+			vendorRepo.deleteById(id);
+			jr = JsonResponse.getInstance(id);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error deleting vendor: " + e.getMessage());
+			e.printStackTrace();
 		}
 
-
-
-
+		return jr;
+	}
 
 }
