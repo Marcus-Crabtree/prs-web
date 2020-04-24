@@ -2,55 +2,66 @@ package com.prs.business;
 
 import javax.persistence.*;
 
-//@Entity
+@Entity
 public class LineItem {
-	//@Id
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int requestId;
-	private int productId;
+	@ManyToOne
+	@JoinColumn(name = "RequestID")
+	private Request request;
+	@ManyToOne
+	@JoinColumn(name = "ProductID")
+	private Product product;
 	private int quantity;
-	
+
+	public LineItem(int id, Request request, Product product, int quantity) {
+		super();
+		this.id = id;
+		this.request = request;
+		this.product = product;
+		this.quantity = quantity;
+	}
+
 	public LineItem() {
 		super();
 	}
-	public LineItem(int id, int requestId, int productId, int quantity) {
-		super();
-		this.id = id;
-		this.requestId = requestId;
-		this.productId = productId;
-		this.quantity = quantity;
-	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	public int getRequestId() {
-		return requestId;
+
+	public Request getRequest() {
+		return request;
 	}
-	public void setRequestId(int requestId) {
-		this.requestId = requestId;
+
+	public void setRequest(Request request) {
+		this.request = request;
 	}
-	public int getProductId() {
-		return productId;
+
+	public Product getProduct() {
+		return product;
 	}
-	public void setProductId(int productId) {
-		this.productId = productId;
+
+	public void setProduct(Product product) {
+		this.product = product;
 	}
+
 	public int getQuantity() {
 		return quantity;
 	}
+
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
 	@Override
 	public String toString() {
-		return "LineItem [id=" + id + ", requestId=" + requestId + ", productId=" + productId + ", quantity=" + quantity
-				+ "]";
+		return "LineItem [id=" + id + ", request=" + request + ", product=" + product + ", quantity=" + quantity + "]";
 	}
-	
-	
-	
+
 }

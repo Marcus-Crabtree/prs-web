@@ -18,11 +18,11 @@ public class Request {
 	private String deliveryMode;
 	private String status;
 	private String reasonForRejection;
-	private LocalDate dateNedded;
+	private LocalDate dateNeeded;
 	private double total;
 	private LocalDateTime submittedDate;
 	public Request(int id, User user, String description, String justification, String deliveryMode, String status,
-			String reasonForRejection, LocalDate dateNedded, double total, LocalDateTime submittedDate) {
+			String reasonForRejection, LocalDate dateNeeded, double total, LocalDateTime submittedDate) {
 		super();
 		this.id = id;
 		this.user = user;
@@ -31,7 +31,7 @@ public class Request {
 		this.deliveryMode = deliveryMode;
 		this.status = status;
 		this.reasonForRejection = reasonForRejection;
-		this.dateNedded = dateNedded;
+		this.dateNeeded = dateNeeded;
 		this.total = total;
 		this.submittedDate = submittedDate;
 	}
@@ -80,11 +80,11 @@ public class Request {
 	public void setReasonForRejection(String reasonForRejection) {
 		this.reasonForRejection = reasonForRejection;
 	}
-	public LocalDate getDateNedded() {
-		return dateNedded;
+	public LocalDate getDateNeeded() {
+		return dateNeeded;
 	}
-	public void setDateNedded(LocalDate dateNedded) {
-		this.dateNedded = dateNedded;
+	public void setDateNeeded(LocalDate dateNeeded) {
+		this.dateNeeded = dateNeeded;
 	}
 	public double getTotal() {
 		return total;
@@ -102,10 +102,9 @@ public class Request {
 	public String toString() {
 		return "Request [id=" + id + ", user=" + user + ", description=" + description + ", justification="
 				+ justification + ", deliveryMode=" + deliveryMode + ", status=" + status + ", reasonForRejection="
-				+ reasonForRejection + ", dateNedded=" + dateNedded + ", total=" + total + ", submittedDate="
+				+ reasonForRejection + ", dateNeeded=" + dateNeeded + ", total=" + total + ", submittedDate="
 				+ submittedDate + "]";
 	}
-
 	
 	
 	
