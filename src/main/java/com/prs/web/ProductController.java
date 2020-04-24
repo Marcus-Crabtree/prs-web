@@ -12,12 +12,12 @@ import com.prs.business.Product;
 
 import com.prs.db.ProductRepository;
 
-@RestController
-@RequestMapping("/products")
+//@RestController
+//@RequestMapping("/products")
 public class ProductController {
-	@Autowired
+	//@Autowired
 	private ProductRepository productRepo;
-	@GetMapping ("/")
+	//@GetMapping ("/")
 	public JsonResponse list() {
 		JsonResponse jr = null;
 		List<Product> products = productRepo.findAll();
@@ -30,7 +30,7 @@ public class ProductController {
 	}
 
 	// get method
-		@GetMapping("/{id}")
+		//@GetMapping("/{id}")
 		public JsonResponse get(@PathVariable int id) {
 			JsonResponse jr = null;
 			Optional<Product> product = productRepo.findById(id);
@@ -44,7 +44,7 @@ public class ProductController {
 		}
 
 	// 'create' method
-		@PostMapping("/")
+		//@PostMapping("/")
 		public JsonResponse createProduct(@RequestBody Product product) {
 			JsonResponse jr = null;
 
@@ -63,7 +63,7 @@ public class ProductController {
 		}
 
 		// update method
-		@PutMapping("/")
+		//@PutMapping("/")
 		public JsonResponse updateProduct(@RequestBody Product product) {
 			JsonResponse jr = null;
 
@@ -79,7 +79,7 @@ public class ProductController {
 		}
 
 	//delete method
-		@DeleteMapping("/{id}")
+		//@DeleteMapping("/{id}")
 		public JsonResponse deleteProduct(@PathVariable int id) {
 			JsonResponse jr = null;
 

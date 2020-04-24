@@ -2,10 +2,10 @@ package com.prs.business;
 
 import javax.persistence.*;
 
-//@Entity
+@Entity
 public class Vendor {
-	//@Id
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	private String code;
 	private String name;
