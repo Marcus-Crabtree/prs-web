@@ -5,13 +5,13 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 
-//@Entity
+@Entity
 public class Request {
-	//@Id
-	//@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	//@ManyToOne
-	//@JoinColumn(name="UserID")
+	@ManyToOne
+	@JoinColumn(name="UserID")
 	private User user;
 	private String description;
 	private String justification;
