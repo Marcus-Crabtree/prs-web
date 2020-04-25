@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.prs.business.JsonResponse;
 import com.prs.business.LineItem;
+import com.prs.business.Request;
 import com.prs.db.LineItemRepository;
 
 @RestController
@@ -92,4 +93,19 @@ public class LineItemController {
 
 		return jr;
 	}
+	//@GetMapping("/lines-for-pr/{id}")
+    //public JsonResponse getLineItemsForRequest(@PathVariable int id) {
+    //    JsonResponse jr = null;
+       // Optional<Request> requests = requestRepo.findById(id);
+      //  List<LineItem> lineItems = lineItemRepo.findAllByRequest(requests);
+
+     //   if (!lineItems.isEmpty()) {
+     //       jr = JsonResponse.getInstance(lineItems);
+     //   } else {
+      //      jr = JsonResponse.getErrorInstance("No lineItems found for request id: " + id);
+     //   }
+      //  return jr;
+   // }
+
+
 }

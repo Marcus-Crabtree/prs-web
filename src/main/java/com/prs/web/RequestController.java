@@ -120,16 +120,16 @@ public class RequestController {
 	}
 
 	//request review
-	//@GetMapping("/list-view/{id}")
-	//public JsonResponse reviewRequest(@PathVariable int id) {
-		//JsonResponse jr = null;
-		//Optional<Request> request = requestRepo.setStatusForReview(id.getStatus());
-		//if (request.isPresent()) {
-		//	jr = JsonResponse.getInstance(request.get());
-		//} else {
-		//	jr = JsonResponse.getErrorInstance("No request found for Reviewing ");
-		//}
-		//return jr;
-	//}
+	@GetMapping("/list-review/{id}")
+    public JsonResponse showRequestsInReviewStatus(@PathVariable int id) {
+        JsonResponse jr = null;
+        List<Request> requests = requestRepo.findAllByRequestId(id);
+        if (requests.size() > 0) {
+            jr = JsonResponse.getInstance(requests);
+        } else {
+            jr = JsonResponse.getErrorInstance("No requests in review status found for: "+id+".");
+        }
+        return jr;
+    }
 
 }
