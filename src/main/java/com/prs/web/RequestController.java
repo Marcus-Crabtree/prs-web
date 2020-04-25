@@ -17,7 +17,8 @@ import com.prs.db.RequestRepository;
 public class RequestController {
 	@Autowired
 	private RequestRepository requestRepo;
-	@GetMapping ("/")
+
+	@GetMapping("/")
 	public JsonResponse list() {
 		JsonResponse jr = null;
 		List<Request> requests = requestRepo.findAll();
@@ -94,4 +95,31 @@ public class RequestController {
 
 		return jr;
 	}
+
+//submit-review
+	@PutMapping("/requests/submit-review")
+	public JsonResponse submitForReview(Request req) {
+		JsonResponse jr = null;
+		if (req.getTotal() < 50) {
+			req.setStatus("Approved");
+		} else {
+			req.setStatus("Review");
+		}
+		req.setSubmittedDate(LocalDateTime.now());
+		return jr;
+	}
+
+//	request review
+	@GetMapping("/requests/list-view/{id}")
+	public JsonResponse reviewRequest(Request req) {
+		JsonResponse jr = null;
+		Optional<Request> request = requestRepo.setStatusForReview(req.getStatus());
+		if (request.isPresent()) {
+			jr = JsonResponse.getInstance(request.get());
+		} else {
+			jr = JsonResponse.getErrorInstance("No request found for Reviewing ");
+		}
+		return jr;
+	}
+
 }

@@ -37,7 +37,7 @@ public class UserController {
 		if (user.isPresent()) {
 			jr = JsonResponse.getInstance(user.get());
 		} else {
-			jr = JsonResponse.getErrorInstance("Invalid username/pwd combination try again");
+			jr = JsonResponse.getErrorInstance("Invalid username/passwordd combination, try again.");
 		}
 
 		return jr;
