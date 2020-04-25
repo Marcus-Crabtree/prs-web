@@ -97,29 +97,39 @@ public class RequestController {
 	}
 
 //submit-review
-	@PutMapping("/requests/submit-review")
-	public JsonResponse submitForReview(Request req) {
+	@PutMapping("/submit-review")
+	public JsonResponse submitForReview(@RequestBody Request req) {
 		JsonResponse jr = null;
-		if (req.getTotal() < 50) {
+		
+		try {
+		if (req.getTotal() <= 50) {
 			req.setStatus("Approved");
 		} else {
 			req.setStatus("Review");
 		}
+		
 		req.setSubmittedDate(LocalDateTime.now());
-		return jr;
-	}
-
-//	request review
-	@GetMapping("/requests/list-view/{id}")
-	public JsonResponse reviewRequest(Request req) {
-		JsonResponse jr = null;
-		Optional<Request> request = requestRepo.setStatusForReview(req.getStatus());
-		if (request.isPresent()) {
-			jr = JsonResponse.getInstance(request.get());
-		} else {
-			jr = JsonResponse.getErrorInstance("No request found for Reviewing ");
+		req = requestRepo.save(req);
+		jr = JsonResponse.getInstance(req);
+		}
+		catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error processing request" + e.getMessage());
+			
 		}
 		return jr;
 	}
+
+	//request review
+	//@GetMapping("/list-view/{id}")
+	//public JsonResponse reviewRequest(@PathVariable int id) {
+		//JsonResponse jr = null;
+		//Optional<Request> request = requestRepo.setStatusForReview(id.getStatus());
+		//if (request.isPresent()) {
+		//	jr = JsonResponse.getInstance(request.get());
+		//} else {
+		//	jr = JsonResponse.getErrorInstance("No request found for Reviewing ");
+		//}
+		//return jr;
+	//}
 
 }

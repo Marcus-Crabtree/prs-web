@@ -8,5 +8,5 @@ import com.prs.business.Request;
 
 
 public interface RequestRepository extends JpaRepository<Request, Integer> {
-	Optional<Request> setStatusForReview(String request);
+	List<Request> findAllByUserIdNot(int userId);
 }
