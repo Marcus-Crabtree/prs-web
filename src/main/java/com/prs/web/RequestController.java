@@ -98,38 +98,69 @@ public class RequestController {
 
 //submit-review
 	@PutMapping("/submit-review")
-	public JsonResponse submitForReview(@RequestBody Request req) {
+	public JsonResponse submitForReview(@RequestBody Request request) {
 		JsonResponse jr = null;
-		
+
 		try {
-		if (req.getTotal() <= 50) {
-			req.setStatus("Approved");
-		} else {
-			req.setStatus("Review");
-		}
-		
-		req.setSubmittedDate(LocalDateTime.now());
-		req = requestRepo.save(req);
-		jr = JsonResponse.getInstance(req);
-		}
-		catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error processing request" + e.getMessage());
-			
+			if (request.getTotal() <= 50) {
+				request.setStatus("Approved");
+			} else {
+				request.setStatus("Review");
+			}
+
+			request.setSubmittedDate(LocalDateTime.now());
+			request = requestRepo.save(request);
+			jr = JsonResponse.getInstance(request);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error Submitting for review" + e.getMessage());
+
 		}
 		return jr;
 	}
 
-	//request review
+	// approve method
+	@PutMapping("/approve")
+	public JsonResponse submitApproval(@RequestBody Request request) {
+		JsonResponse jr = null;
+		try {
+			request.setStatus("Approved");
+			request.setSubmittedDate(LocalDateTime.now());
+			request = requestRepo.save(request);
+			jr = JsonResponse.getInstance(request);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error processing approval" + e.getMessage());
+
+		}
+		return jr;
+	}
+
+	// reject method
+	@PutMapping("/reject")
+	public JsonResponse submitRejection(@RequestBody Request request) {
+		JsonResponse jr = null;
+		try {
+			request.setStatus("Rejected");
+			request.setSubmittedDate(LocalDateTime.now());
+			request = requestRepo.save(request);
+			jr = JsonResponse.getInstance(request);
+		} catch (Exception e) {
+			jr = JsonResponse.getErrorInstance("Error processing rejection" + e.getMessage());
+
+		}
+		return jr;
+	}
+
+	// request review
 	@GetMapping("/list-review/{id}")
-    public JsonResponse showRequestsInReviewStatus(@PathVariable int id) {
-        JsonResponse jr = null;
-        List<Request> requests = requestRepo.findAllByRequestId(id);
-        if (requests.size() > 0) {
-            jr = JsonResponse.getInstance(requests);
-        } else {
-            jr = JsonResponse.getErrorInstance("No requests in review status found for: "+id+".");
-        }
-        return jr;
-    }
+	public JsonResponse showRequestsInReviewStatusForUser(@PathVariable int id) {
+		JsonResponse jr = null;
+		List<Request> requests = requestRepo.findAllByUserId(id);
+		if (requests.size() > 0) {
+			jr = JsonResponse.getInstance(requests);
+		} else {
+			jr = JsonResponse.getErrorInstance("No requests in review status found for: " + id + ".");
+		}
+		return jr;
+	}
 
 }
