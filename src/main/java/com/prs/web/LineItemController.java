@@ -74,12 +74,11 @@ public class LineItemController {
 
 		try {
 			if (lineItemRepo.existsById(lineItem.getId())) {
-
 				jr = JsonResponse.getInstance(lineItemRepo.save(lineItem));
 				recalcTotal(lineItem.getRequest());
 			} else {
-
-				jr = JsonResponse.getErrorInstance("Error updating Line Item. ID: " + lineItem.getId() + " doesn't exist.");
+				jr = JsonResponse
+						.getErrorInstance("Error updating Line Item. ID: " + lineItem.getId() + " doesn't exist.");
 			}
 		} catch (DataIntegrityViolationException dive) {
 			jr = JsonResponse.getInstance(dive.getRootCause().getMessage());
@@ -97,25 +96,17 @@ public class LineItemController {
 
 		try {
 			if (lineItemRepo.existsById(id)) {
-
 				Request request = lineItemRepo.findById(id).get().getRequest();
-
 				lineItemRepo.deleteById(id);
-
 				recalcTotal(request);
-
 				jr = JsonResponse.getInstance("Delete Successful!");
-
 			} else {
-
 				jr = JsonResponse.getInstance("Error deleting Line Item. id: " + id + " doesn't exist.");
 			}
-
 		} catch (Exception e) {
 			jr = JsonResponse.getInstance(e);
 			e.printStackTrace();
 		}
-
 		return jr;
 	}
 
@@ -128,27 +119,19 @@ public class LineItemController {
 			jr = JsonResponse.getInstance(e);
 			e.printStackTrace();
 		}
-
 		return jr;
 	}
 
 	void recalcTotal(Request request) {
-
 		double lineItemtotal = 0;
-
 		List<LineItem> lineItems = lineItemRepo.findByRequestId(request.getId());
-
 		for (LineItem line : lineItems) {
 			lineItemtotal += line.getLineTotal();
 		}
-
 		request.setTotal(lineItemtotal);
-
 		try {
 			requestRepo.save(request);
-
 		} catch (Exception e) {
-
 			throw e;
 		}
 	}
