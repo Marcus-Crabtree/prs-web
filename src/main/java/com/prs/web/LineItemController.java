@@ -11,13 +11,17 @@ import com.prs.business.JsonResponse;
 import com.prs.business.LineItem;
 import com.prs.business.Request;
 import com.prs.db.LineItemRepository;
+import com.prs.db.RequestRepository;
 
 @RestController
 @RequestMapping("/line-items")
 public class LineItemController {
 	@Autowired
 	private LineItemRepository lineItemRepo;
-	@GetMapping ("/")
+	@Autowired
+	private RequestRepository requestRepo;
+
+	@GetMapping("/")
 	public JsonResponse list() {
 		JsonResponse jr = null;
 		List<LineItem> lineItems = lineItemRepo.findAll();
@@ -50,7 +54,8 @@ public class LineItemController {
 
 		try {
 			lineItem = lineItemRepo.save(lineItem);
-			jr = JsonResponse.getInstance(lineItem);
+			jr = JsonResponse.getInstance(lineItemRepo.save(lineItem));
+			recalcTotal(lineItem.getRequest());
 		} catch (DataIntegrityViolationException dive) {
 			jr = JsonResponse.getErrorInstance(dive.getRootCause().getMessage());
 			dive.printStackTrace();
@@ -68,13 +73,20 @@ public class LineItemController {
 		JsonResponse jr = null;
 
 		try {
-			lineItem = lineItemRepo.save(lineItem);
-			jr = JsonResponse.getInstance(lineItem);
-		} catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error updating Line Item: " + e.getMessage());
-			e.printStackTrace();
-		}
+			if (lineItemRepo.existsById(lineItem.getId())) {
 
+				jr = JsonResponse.getInstance(lineItemRepo.save(lineItem));
+				recalcTotal(lineItem.getRequest());
+			} else {
+
+				jr = JsonResponse.getErrorInstance("Error updating Line Item. ID: " + lineItem.getId() + " doesn't exist.");
+			}
+		} catch (DataIntegrityViolationException dive) {
+			jr = JsonResponse.getInstance(dive.getRootCause().getMessage());
+			dive.printStackTrace();
+		} catch (Exception e) {
+			jr = JsonResponse.getInstance(e);
+		}
 		return jr;
 	}
 
@@ -84,28 +96,61 @@ public class LineItemController {
 		JsonResponse jr = null;
 
 		try {
-			lineItemRepo.deleteById(id);
-			jr = JsonResponse.getInstance(id);
+			if (lineItemRepo.existsById(id)) {
+
+				Request request = lineItemRepo.findById(id).get().getRequest();
+
+				lineItemRepo.deleteById(id);
+
+				recalcTotal(request);
+
+				jr = JsonResponse.getInstance("Delete Successful!");
+
+			} else {
+
+				jr = JsonResponse.getInstance("Error deleting Line Item. id: " + id + " doesn't exist.");
+			}
+
 		} catch (Exception e) {
-			jr = JsonResponse.getErrorInstance("Error deleting Line Item: " + e.getMessage());
+			jr = JsonResponse.getInstance(e);
 			e.printStackTrace();
 		}
 
 		return jr;
 	}
-	//@GetMapping("/lines-for-pr/{id}")
-    //public JsonResponse getLineItemsForRequest(@PathVariable int id) {
-    //    JsonResponse jr = null;
-       // Optional<Request> requests = requestRepo.findById(id);
-      //  List<LineItem> lineItems = lineItemRepo.findAllByRequest(requests);
 
-     //   if (!lineItems.isEmpty()) {
-     //       jr = JsonResponse.getInstance(lineItems);
-     //   } else {
-      //      jr = JsonResponse.getErrorInstance("No lineItems found for request id: " + id);
-     //   }
-      //  return jr;
-   // }
+	@GetMapping("/lines-for-pr/{id}")
+	public JsonResponse getLineItemById(@PathVariable int id) {
+		JsonResponse jr = null;
+		try {
+			jr = JsonResponse.getInstance(lineItemRepo.findByRequestId(id));
+		} catch (Exception e) {
+			jr = JsonResponse.getInstance(e);
+			e.printStackTrace();
+		}
 
+		return jr;
+	}
+
+	void recalcTotal(Request request) {
+
+		double lineItemtotal = 0;
+
+		List<LineItem> lineItems = lineItemRepo.findByRequestId(request.getId());
+
+		for (LineItem line : lineItems) {
+			lineItemtotal += line.getLineTotal();
+		}
+
+		request.setTotal(lineItemtotal);
+
+		try {
+			requestRepo.save(request);
+
+		} catch (Exception e) {
+
+			throw e;
+		}
+	}
 
 }

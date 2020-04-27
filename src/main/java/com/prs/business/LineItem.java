@@ -58,7 +58,12 @@ public class LineItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
+	
+	public double getLineTotal() {
+        double lineTotal = product.getPrice() * quantity;
+        return lineTotal;
+    }
+	
 	@Override
 	public String toString() {
 		return "LineItem [id=" + id + ", request=" + request + ", product=" + product + ", quantity=" + quantity + "]";
