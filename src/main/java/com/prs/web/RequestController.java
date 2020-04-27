@@ -158,7 +158,7 @@ public class RequestController {
             if (requests.size() > 0) {
                 jr = JsonResponse.getInstance(requests);
             } else {
-                jr = JsonResponse.getErrorInstance("No requests found.");
+                jr = JsonResponse.getErrorInstance("No requests found for ID: "+id);
             }
         return jr;
     }
