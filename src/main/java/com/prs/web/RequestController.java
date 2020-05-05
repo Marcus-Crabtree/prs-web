@@ -12,6 +12,7 @@ import com.prs.business.JsonResponse;
 import com.prs.business.Request;
 import com.prs.db.RequestRepository;
 
+@CrossOrigin()
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
